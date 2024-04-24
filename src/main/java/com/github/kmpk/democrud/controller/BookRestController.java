@@ -6,6 +6,7 @@ import com.github.kmpk.democrud.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,19 +19,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping(BookRestController.REST_URL)
 @Validated
 @RequiredArgsConstructor
 public class BookRestController {
+    public static final String REST_URL = "/books";
+
     private final BookService service;
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Optional<Book> get(@PathVariable long id) {
-        return service.findById(id);
+    public ResponseEntity<Book> get(@PathVariable long id) {
+        return ResponseEntity.of(service.findById(id));
     }
 
     @GetMapping
@@ -52,7 +53,7 @@ public class BookRestController {
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody @Valid Book book) {
         if (!book.isNew()) {
-            throw new IllegalRequestDataException("Entity should has no id");
+            throw new IllegalRequestDataException("New entity must have no id");
         }
         return service.create(book);
     }

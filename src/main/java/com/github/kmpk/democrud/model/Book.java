@@ -2,9 +2,13 @@ package com.github.kmpk.democrud.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonAutoDetect(isGetterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Book implements HasId {
     private Long id;
