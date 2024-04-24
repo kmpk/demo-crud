@@ -1,0 +1,15 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: demo-crud
+  datasource:
+    url: jdbc:postgresql://localhost:5433/demo
+    username: postgres
+    password: postgres
+    hikari:
+      schema: demo
+  flyway:
+    locations: classpath:db/changelog
+    schemas: demo
+    validateMigrationNaming: true
