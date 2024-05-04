@@ -1,9 +1,7 @@
 package com.github.kmpk.democrud.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kmpk.democrud.dao.BookDao;
 import com.github.kmpk.democrud.model.Book;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,20 +24,11 @@ import static org.testcontainers.shaded.org.hamcrest.text.IsEmptyString.emptyStr
 
 @SpringBootTest(properties = {"spring.datasource.url=jdbc:tc:postgresql:15.5:///test-db"})
 @AutoConfigureMockMvc
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class BookRestControllerTest {
-    @Autowired
-    BookDao dao;
+abstract class AbstractBookRestControllerTest {
     @Autowired
     MockMvc mvc;
     @Autowired
     ObjectMapper mapper;
-
-    @BeforeEach
-    void setUp() {
-        dao.save(testBook1);
-        dao.save(testBook2);
-    }
 
     @Test
     void get() throws Exception {
@@ -70,6 +59,7 @@ class BookRestControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void update() throws Exception {
         Book book = new Book(testBook1.getId(), "newTitle", "newDescription", "newAuthor", "newIsbn");
 
@@ -87,6 +77,7 @@ class BookRestControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void updateInvalid() throws Exception {
         Book book = new Book(testBook1.getId(), null, null, "", "");
 
@@ -121,6 +112,7 @@ class BookRestControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void create() throws Exception {
         Book book = new Book(null, "newTitle", "newDescription", "newAuthor", "newIsbn");
 
@@ -142,6 +134,7 @@ class BookRestControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void createInvalid() throws Exception {
         Book book = new Book(null, null, null, "", "");
 
@@ -176,6 +169,7 @@ class BookRestControllerTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void delete() throws Exception {
         mvc.perform(MockMvcRequestBuilders.delete(REST_URL + "/" + testBook1.getId()))
                 .andExpect(status().isNoContent())

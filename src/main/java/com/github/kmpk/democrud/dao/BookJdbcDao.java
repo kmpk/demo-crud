@@ -2,6 +2,7 @@ package com.github.kmpk.democrud.dao;
 
 import com.github.kmpk.democrud.model.Book;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -17,6 +18,7 @@ import static java.sql.Statement.RETURN_GENERATED_KEYS;
 
 @Repository
 @RequiredArgsConstructor
+@Profile("JDBC")
 public class BookJdbcDao implements BookDao {
     public static final String SELECT_QUERY = "SELECT * FROM book WHERE id=?";
     public static final String SELECT_COUNT_QUERY = "SELECT count(*) FROM book WHERE id=?";
